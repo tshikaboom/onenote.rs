@@ -4,15 +4,21 @@ use std::ffi::OsString;
 use std::path::PathBuf;
 
 fn main() {
-    let path = env::args().nth(1).expect("usage: parse <file>");
+    let path = env::args().nth(1).expect("usage: parse <file> [--silent]");
+    let opt_silent = Some(String::from("--silent")) == env::args().nth(2);
+
     let path = PathBuf::from(path);
 
     let mut parser = Parser::new();
     if path.extension() == Some(&OsString::from("onetoc2".to_string())) {
         let notebook = parser.parse_notebook(&path).unwrap();
-        println!("{:#?}", notebook);
+        if !opt_silent {
+            println!("{:#?}", notebook);
+        }
     } else {
         let section = parser.parse_section(&path).unwrap();
-        println!("{:#?}", section);
+        if !opt_silent {
+            println!("{:#?}", section);
+        }
     }
 }
