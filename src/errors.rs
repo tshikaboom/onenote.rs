@@ -103,6 +103,9 @@ pub enum ErrorKind {
     #[error("Malformed FSSHTTPB data: {0}")]
     MalformedFssHttpBData(Cow<'static, str>),
 
+    #[error("Unknown file type: {guid}")]
+    UnknownFileType{ guid: String },
+
     /// A malformed UUID was encountered
     #[error("Invalid UUID: {err}")]
     InvalidUuid {

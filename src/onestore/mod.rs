@@ -9,6 +9,7 @@ use crate::onestore::revision::Revision;
 use crate::shared::guid::Guid;
 use std::collections::{HashMap, HashSet};
 
+pub(crate) mod file;
 pub(crate) mod header;
 pub(crate) mod mapping_table;
 pub(crate) mod object;
