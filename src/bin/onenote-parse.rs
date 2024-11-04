@@ -4,6 +4,11 @@ use std::ffi::OsString;
 use std::path::PathBuf;
 
 fn main() {
+    #[cfg(feature = "logging")]
+    env_logger::builder()
+        .format_timestamp(None)
+        .init();
+
     let path = env::args().nth(1).expect("usage: parse <file> [--silent]");
     let opt_silent = Some(String::from("--silent")) == env::args().nth(2);
 

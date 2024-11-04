@@ -2,6 +2,8 @@ use crate::errors::{ErrorKind, Result};
 use crate::shared::guid::Guid;
 use crate::Reader;
 
+use cfg_log::debug;
+
 /// Part of a OneStore file's header data.
 /// This is shared between the normal file header format and the FSSHTTPB format.
 ///
@@ -44,6 +46,10 @@ impl HeaderGuids {
         let file = Guid::parse(reader)?;
         let legacy_file_version = Guid::parse(reader)?;
         let file_format = Guid::parse(reader)?;
+
+        debug!("guidFileType\t\t{:?}", &file_type);
+        debug!("guidLegacyFileVersion\t{:?}", &legacy_file_version);
+        debug!("guidFileFormat\t\t{:?}", &file_format);
 
         Ok(FileHeader {
             file_type,
