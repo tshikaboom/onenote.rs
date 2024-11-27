@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Internal: Add a print option to the parser to print its output
+- Added ability to parse a section from an in-memory buffer
+
+### Changed
+
+- Internal: make the parser silent by default, for less clutter on the terminal
+- Internal: Move the package header parsing code to `fsshttpb`
+- Internal: Refactor some file header parsing to recognize a revision store header
+
+### Removed
+
+- Internal: remove the `provide_any` feature, as it seems to have been removed in
+  nightly rust
+
+
 ## [0.3.1] - 2022-11-19
 
 ### Added
