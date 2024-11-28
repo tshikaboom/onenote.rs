@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Internal: make the parser silent by default, for less clutter on the terminal
 - Internal: Move the package header parsing code to `fsshttpb`
 - Internal: Refactor some file header parsing to recognize a revision store header
+- Internal: Update dependencies
 
 ### Removed
 
