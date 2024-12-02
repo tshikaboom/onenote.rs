@@ -24,6 +24,7 @@ pub(crate) enum HeaderGuids {
     OneNotePackageStore,
     OneNoteRevisionStore,
 }
+
 pub(crate) fn determine_format(file_format: Guid) -> Result<HeaderGuids> {
     let package_store_format = Guid::from_str("638DE92F-A6D4-4bc1-9A36-B3FC2511A5B7")?;
     let revision_store_format = Guid::from_str("109ADD3F-911B-49F5-A5D0-1791EDC8AED8")?;
