@@ -1,4 +1,5 @@
 pub(crate) mod compact_id;
+pub(crate) mod file_chunk_reference;
 pub(crate) mod jcid;
 pub(crate) mod object_prop_set;
 mod object_stream_header;
