@@ -51,7 +51,7 @@ impl Parser {
             return Err(ErrorKind::MalformedOneNoteData("not a legacy OneStore file".into()).into())
         }
 
-        let packaging = OneStorePackaging::parse(&mut reader)?;
+        let packaging = OneStorePackaging::parse(&mut reader, header_guids)?;
         let store = parse_store(&packaging)?;
 
         if store.schema_guid() != guid!({E4DBFD38-E5C7-408B-A8A1-0E7B421E1F5F}) {
@@ -89,7 +89,9 @@ impl Parser {
     ///
     /// The `data` argument must contain a OneNote section.
     pub fn parse_section_buffer(&mut self, data: &[u8], file_name: &Path) -> Result<Section> {
-        let packaging = OneStorePackaging::parse(&mut Reader::new(data))?;
+        let mut reader = Reader::new(data);
+        let header_guids = FileHeader::parse(&mut reader)?;
+        let packaging = OneStorePackaging::parse(&mut reader, header_guids)?;
         let store = parse_store(&packaging)?;
 
         if store.schema_guid() != guid!({1F937CB4-B26F-445F-B9F8-17E20160E461}) {
@@ -119,7 +121,7 @@ impl Parser {
             return Err(ErrorKind::MalformedOneNoteData("not a legacy OneStore file".into()).into())
         }
 
-        let packaging = OneStorePackaging::parse(&mut reader)?;
+        let packaging = OneStorePackaging::parse(&mut reader, header_guids)?;
         let store = parse_store(&packaging)?;
 
         if store.schema_guid() != guid!({1F937CB4-B26F-445F-B9F8-17E20160E461}) {
