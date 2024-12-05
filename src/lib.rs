@@ -5,9 +5,9 @@
 #![cfg_attr(feature = "backtrace", feature(error_generic_member_access))]
 
 pub mod errors;
-mod fsshttpb;
 #[macro_use]
 mod macros;
+mod fsshttpb;
 mod one;
 mod onenote;
 mod onestore;
