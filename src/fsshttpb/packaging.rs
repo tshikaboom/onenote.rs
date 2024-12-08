@@ -20,6 +20,12 @@ pub(crate) struct OneStorePackaging {
     pub(crate) data_element_package: DataElementPackage,
 }
 
+#[derive(PartialEq)]
+pub(crate) enum CellSchemaId {
+    Notebook,
+    Section,
+}
+
 impl OneStorePackaging {
     pub(crate) fn parse(reader: Reader, header_guids: FileHeader) -> Result<OneStorePackaging> {
 
@@ -42,5 +48,21 @@ impl OneStorePackaging {
             cell_schema,
             data_element_package,
         })
+    }
+
+    pub(crate) fn determine_format(&self) -> Result<CellSchemaId> {
+        let onenote_package_section_guid = guid!({1F937CB4-B26F-445F-B9F8-17E20160E461});
+        let onenote_package_notebook_guid = guid!({E4DBFD38-E5C7-408B-A8A1-0E7B421E1F5F});
+
+        if self.cell_schema == onenote_package_notebook_guid {
+            Ok(CellSchemaId::Notebook)
+        } else if self.cell_schema == onenote_package_section_guid {
+            Ok(CellSchemaId::Section)
+        } else {
+            Err(ErrorKind::UnknownFileType {
+                guid: self.cell_schema.to_string(),
+            }
+            .into())
+        }
     }
 }
