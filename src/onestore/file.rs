@@ -66,22 +66,6 @@ pub(crate) enum HeaderFormat {
     OneNoteRevisionStore,
 }
 
-pub(crate) fn determine_format(file_format: Guid) -> Result<HeaderFormat> {
-    let package_store_format = Guid::from_str("638DE92F-A6D4-4bc1-9A36-B3FC2511A5B7")?;
-    let revision_store_format = Guid::from_str("109ADD3F-911B-49F5-A5D0-1791EDC8AED8")?;
-
-    if file_format == revision_store_format {
-        Ok(HeaderFormat::OneNoteRevisionStore)
-    } else if file_format == package_store_format {
-        Ok(HeaderFormat::OneNotePackageStore)
-    } else {
-        Err(ErrorKind::UnknownFileType {
-            guid: file_format.to_string(),
-        }
-        .into())
-    }
-}
-
 impl FileHeader {
     pub(crate) fn parse(reader: Reader) -> Result<FileHeader> {
         let file_type = Guid::parse(reader)?;
@@ -99,5 +83,24 @@ impl FileHeader {
             legacy_file_version,
             file_format,
         })
+    }
+
+    pub(crate) fn determine_format(&self) -> Result<HeaderFormat> {
+        // The second guid here triggers this exponent error in the parser [1],
+        // so let's just construct these from strings.
+        // [1]: https://github.com/rust-lang/rust/issues/111615
+        let package_store_format = Guid::from_str("638DE92F-A6D4-4bc1-9A36-B3FC2511A5B7")?;
+        let revision_store_format = Guid::from_str("109ADD3F-911B-49F5-A5D0-1791EDC8AED8")?;
+
+        if self.file_format == revision_store_format {
+            Ok(HeaderFormat::OneNoteRevisionStore)
+        } else if self.file_format == package_store_format {
+            Ok(HeaderFormat::OneNotePackageStore)
+        } else {
+            Err(ErrorKind::UnknownFileType {
+                guid: self.file_format.to_string(),
+            }
+            .into())
+        }
     }
 }

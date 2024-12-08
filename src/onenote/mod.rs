@@ -2,7 +2,7 @@ use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::packaging::{CellSchemaId, OneStorePackaging};
 use crate::onenote::notebook::Notebook;
 use crate::onenote::section::{Section, SectionEntry, SectionGroup};
-use crate::onestore::file::{determine_format, FileHeader, HeaderFormat};
+use crate::onestore::file::{FileHeader, HeaderFormat};
 use crate::onestore::parse_store;
 use crate::reader::Reader;
 use std::ffi::OsStr;
@@ -46,7 +46,7 @@ impl Parser {
         let data = Parser::read(file)?;
         let mut reader = Reader::new(data.as_slice());
         let header_guids = FileHeader::parse(&mut reader)?;
-        let file_type = determine_format(header_guids.file_format)?;
+        let file_type = header_guids.determine_format()?;
         if file_type != HeaderFormat::OneNotePackageStore {
             return Err(ErrorKind::MalformedOneNoteData("not a legacy OneStore file".into()).into())
         }
@@ -116,7 +116,7 @@ impl Parser {
         let data = Parser::read(file)?;
         let mut reader = Reader::new(data.as_slice());
         let header_guids = FileHeader::parse(&mut reader)?;
-        let file_type = determine_format(header_guids.file_format)?;
+        let file_type = header_guids.determine_format()?;
         if file_type != HeaderFormat::OneNotePackageStore {
             return Err(ErrorKind::MalformedOneNoteData("not a legacy OneStore file".into()).into())
         }
